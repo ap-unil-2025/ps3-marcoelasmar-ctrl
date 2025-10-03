@@ -14,12 +14,17 @@ def get_numbers_from_user():
     numbers = []
 
     while True:
-        # TODO: Get input from user
-        # TODO: Check if user typed 'done'
-        # TODO: Try to convert to float and add to list
-        # TODO: Handle invalid input gracefully
-        pass
+        user_input = input("Enter a number (or 'done' to finish): ").strip().lower()
+        
+        if user_input == "done":
+            break
 
+        try:
+            number = float(user_input)
+            numbers.append(number)
+        except ValueError:
+            print("❌ Invalid input. Please enter a number or 'done'.")
+    
     return numbers
 
 
@@ -33,25 +38,23 @@ def analyze_numbers(numbers):
     - maximum: largest number
     - even_count: count of even numbers
     - odd_count: count of odd numbers
-
-    Args:
-        numbers (list): List of numbers to analyze
-
-    Returns:
-        dict: Dictionary with analysis results, or None if list is empty
     """
     if not numbers:
         return None
 
     analysis = {}
+    analysis["count"] = len(numbers)
+    analysis["sum"] = sum(numbers)
+    analysis["average"] = sum(numbers) / len(numbers)
+    analysis["minimum"] = min(numbers)
+    analysis["maximum"] = max(numbers)
 
-    # TODO: Calculate count
-    # TODO: Calculate sum
-    # TODO: Calculate average
-    # TODO: Find minimum
-    # TODO: Find maximum
-    # TODO: Count even numbers (hint: use modulo operator)
-    # TODO: Count odd numbers
+    # Count even and odd (only for integers)
+    even_count = sum(1 for n in numbers if n.is_integer() and int(n) % 2 == 0)
+    odd_count = sum(1 for n in numbers if n.is_integer() and int(n) % 2 != 0)
+
+    analysis["even_count"] = even_count
+    analysis["odd_count"] = odd_count
 
     return analysis
 
@@ -59,30 +62,25 @@ def analyze_numbers(numbers):
 def display_analysis(analysis):
     """
     Display the analysis in a formatted way.
-
-    Args:
-        analysis (dict): Dictionary containing analysis results
     """
     if not analysis:
         return
 
     print("\nAnalysis Results:")
     print("-" * 20)
-
-    # TODO: Display all analysis results in a nice format
-    # Example:
-    # Count: 5
-    # Sum: 25
-    # Average: 5.00
-    # etc.
-    pass
+    print(f"Count: {analysis['count']}")
+    print(f"Sum: {analysis['sum']}")
+    print(f"Average: {analysis['average']:.2f}")
+    print(f"Minimum: {analysis['minimum']}")
+    print(f"Maximum: {analysis['maximum']}")
+    print(f"Even numbers: {analysis['even_count']}")
+    print(f"Odd numbers: {analysis['odd_count']}")
 
 
 def main():
     """Main function to run the number analyzer."""
     print("Number Analyzer")
-    print("Enter numbers one at a time. Type 'done' when finished.")
-    print()
+    print("Enter numbers one at a time. Type 'done' when finished.\n")
 
     # Get numbers from user
     numbers = get_numbers_from_user()
